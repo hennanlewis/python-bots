@@ -4,8 +4,6 @@ import pyautogui
 import pyperclip
 import os
 
-from functions import search_target
-from functions import target_to_click
 
 load_dotenv()
 
@@ -14,53 +12,58 @@ os.chdir(LOCAL_PATH)
 
 BLOG_LINK = os.environ["BLOG_LINK"]
 screen_position_x = screen_position_y = 0
-post_number = 2
-# pyautogui.PAUSE = 0.2
+post_number = 1
+post_limit_number = 100
 
-pyautogui.hotkey("win","1")
 
-print("Aguarde, carregando Firefox...")
-search_target('images/firefox-window-icon.png')
+def search_target(image_path, log_message=""):
+	retryTime = 2
 
-pyautogui.hotkey("ctrl","n")
+	if log_message != "":
+		print(log_message)
 
-print("Aguarde, carregando nova aba...")
-search_target('images/new-tab.png')
-
-pyautogui.typewrite(BLOG_LINK)
-pyautogui.hotkey('enter')
-
-print("Aguarde, página do blogger carregando...")
-search_target('images/blog-loaded.png')
-
-print("Procurando botão para novo post...")
-target_to_click('images/new-post.png')
-
-while post_number <= 100:
-	retryTime = 0
-	print("Criando novo post: Post", post_number)
 	while True:
+		sleep(1)
 		try:
-			target_to_click('images/new-post.png')
-			search_target('images/return-button.png')
-			sleep(1)
-			target_to_click('images/empty-title-post.png')
+			return pyautogui.locateCenterOnScreen(image_path)
 			break
-		except Exception:
-			print("Tentando novamente em", retryTime, "segundos")
+		except Exception as e:
+			print(f"{e}. Retrying in {retryTime} seconds")
 			sleep(retryTime)
 			retryTime += 2
 
-	if post_number < 10:
-		postTitle = "Post " + str(post_number).zfill(2)
-	else:
-		postTitle = "Post " + str(post_number)
-	post_number += 1
-	pyperclip.copy(postTitle)
-	pyautogui.hotkey("ctrl", "v")
+pyautogui.hotkey("win","1")
+search_target("images/firefox-window-icon.png", "Aguarde, carregando Firefox...")
+pyautogui.hotkey("ctrl","n")
+search_target("images/new-tab.png", "Aguarde, carregando nova aba...")
+pyautogui.typewrite(BLOG_LINK)
+pyautogui.hotkey("enter")
+search_target("images/blog-loaded.png", "Aguarde, blogger carregando...")
+screen_position_x, screen_position_y = search_target("images/new-post.png", "Procurando botão para novo post...")
+pyautogui.click(screen_position_x, screen_position_y)
 
-	sleep(1)
-	search_target('images/title-updated.png')
-	
+while post_number <= post_limit_number:
+	print(f"Criando novo post: Post número {post_number}")
+	post_title = "Mangá " + str(post_number).zfill(2)
+	pyperclip.copy(post_title)
+	retryTime = 0
+
+	while True:
+		try:
+			screen_position_x, screen_position_y = pyautogui.locateCenterOnScreen("images/new-post.png")
+			pyautogui.click(screen_position_x, screen_position_y)
+			sleep(1)
+			pyautogui.locateOnScreen("images/return-button.png")
+			screen_position_x, screen_position_y = pyautogui.locateCenterOnScreen("images/empty-title-post.png")
+			pyautogui.click(screen_position_x, screen_position_y)
+			break
+		except Exception:
+			print(f"Tentando novamente em {retryTime} segundos")
+			sleep(retryTime)
+			retryTime += 2
+
+	post_number += 1
+	pyautogui.hotkey("ctrl", "v")
+	search_target("images/title-updated.png", "Página criada com sucesso")
 	sleep(2.5)
-	pyautogui.hotkey("alt", "left")	
+	pyautogui.hotkey("alt", "left")
