@@ -3,18 +3,16 @@ from dotenv import load_dotenv
 from time import sleep
 import pyautogui
 import pyperclip
-import cv2
 import os
 
 load_dotenv()
 LOCAL_PATH = os.getcwd()
 os.chdir(LOCAL_PATH)
 
-
-browser_options = ["firefox", "edge", "edge-dark"]
+browser_options = ["firefox", "edge"]
 print("Qual navegador você usa: ")
 print("1 - Firefox")
-print("2 - Edge")
+print("2 - Microsoft Edge")
 selected = int(input())
 selected_browser = browser_options[selected-1]
 
@@ -32,86 +30,108 @@ selected_blog = blog_options[selected-1]
 post_number = int(input("Entre com o número do primeiro capítulo: "))
 post_limit_number = int(input("Entre com o número do último capítulo: "))
 
-intervaltime = 1
-pyautogui.PAUSE = intervaltime
+
+screen_width, screen_height = pyautogui.size()
+interval_time = 0.25
+pyautogui.PAUSE = interval_time
 screen_width, scr = pyautogui.size()
 path = f"images/{selected_browser}"
+selected_position = None
 
-def search_image(image_path, log_message="", validate=False, x0=0, y0=0, width=screen_width, height=350):
-	log(log_message)
-	retryTime = 0
-	return locateOnScreen(image_path, validate, retryTime, x0, y0, width, height)
+def log(log_message): print(f"{datetime.now()} - {log_message}")
 
+locateCenterOnScreen = pyautogui.locateCenterOnScreen
+typewrite = pyautogui.typewrite
+hotkey = pyautogui.hotkey
+click = pyautogui.click
 
-def log(log_message):
-	print(f"{datetime.now().time()} - {log_message}")
+print()
+log("Iniciando o robô")
+log("Abrindo navegador...")
+pyautogui.hotkey("win")
 
+pyautogui.typewrite(selected_browser, interval=0.03)
+pyautogui.hotkey("backspace", "enter")
 
-def locateOnScreen(image_path, validate, retryTime, x0, y0, width, height):
-	sleep(retryTime)
-	if validate is False:
-		return image_match(image_path, x0, y0, width, height)
+log("Procurando \"Nova aba\"...")
+while True:
+	selected_position = pyautogui.locateCenterOnScreen(f"{path}/new-tab.png", region=(0, 0, 300, 50))
+	if selected_position is not None:
+		log("Abrindo link")
+		image_position = selected_position
+		pyautogui.typewrite(selected_blog, interval=0.03)
+		pyautogui.hotkey("enter")
+		selected_position = None
+		break
 
-	try:
-		return image_match(image_path, x0, y0, width, height)
-	except Exception as e:
-		log(f"{e}. Retrying in {retryTime} seconds")
-		retryTime += 2
-		locateOnScreen(image_path, validate, retryTime, x0, y0, width, height)
-
-def image_match(image_path, x0, y0, width, height):
-	screenshot = pyautogui.screenshot(region=(x0, y0, width, height))
-	screenshot.save("screenshot.png")
-	total_frame = cv2.imread("screenshot.png")
-	section_img = cv2.imread(image_path)
-	result = cv2.matchTemplate(total_frame, section_img, cv2.TM_CCOEFF_NORMED)
-
-	_, _, _, position = cv2.minMaxLoc(result)
-	left, top = position
-
-	log(f"Encontrado a {left}px da esquerda e {top}px do topo")
-	center_x = left + width/2
-	center_y = top + height/2
-	return (center_x, center_y)
-
-
-log("")
-pyautogui.hotkey("win","1")
-
-pyautogui.locateOnScreen(f"{path}/browser-window-icon.png")
-
-pyautogui.hotkey("ctrl","n")
-search_image(f"{path}/new-tab.png", "Abrindo nova aba", width=200, height=80, validate=True)
-
-sleep(1)
-pyautogui.typewrite(selected_blog)
-pyautogui.hotkey("enter")
-search_image(f"{path}/blog-loaded.png", "Carregando Blogger", width=200, height=80, validate=True)
-
+log("Carregando Blogger...")
+while True:
+	selected_position = pyautogui.locateCenterOnScreen(f"{path}/blogger.png", region=(0, 0, 300, 50))
+	if selected_position is not None:
+		selected_position = None
+		break
 
 while post_number <= post_limit_number:
-	log(f"Criando novo post: Post {post_number}")
-	post_title = "Post " + str(post_number).zfill(2)
+	post_title = "Mangá " + str(post_number).zfill(2)
 	pyperclip.copy(post_title)
 	retryTime = 0
+	preview_retry_time = retryTime
+	option = 0
 
 	while True:
-		try:
-			screen_position_x, screen_position_y = search_image(f"{path}/new-post.png",
-				"Procurando botão \"Nova Postagem\"", y0=200, width=200, height=80, validate=True)
-			pyautogui.click(110, 240)
-			pyautogui.locateCenterOnScreen(f"{path}/return-button.png")
-			log("Página de edição de post carregada")
-			title_screen_position_x, title_screen_position_y = search_image(f"{path}/empty-title-post.png",
-				"Renomeando post", validate=True)
-			pyautogui.click(title_screen_position_x, title_screen_position_y)
-			break
-		except Exception as e:
-			log(f"{e}. Retrying in {retryTime} seconds")
-			sleep(retryTime)
-			retryTime += 2
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/new-tab.png", region=(0, 0, 300, 50))
+		if selected_position is not None:
+			log("Retornando a página")
+			image_position = selected_position
+			pyautogui.hotkey("alt", "right")
+			selected_position = None
 
-	pyautogui.hotkey("ctrl", "v")
-	search_image(f"{path}/title-updated.png", "Página criada com sucesso")
-	pyautogui.hotkey("alt", "left")
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/new-post.png", region=(0, 120, 300, 150))
+		if selected_position is not None:
+			log(f"Iniciando novo post...")
+			image_position = selected_position
+			pyautogui.click(image_position, duration=interval_time)
+			retryTime += 2
+			selected_position = None
+			option = 1
+
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/edit-post.png", region=(0, 0, 300, 50))
+		if selected_position is not None and option == 1:
+			log(f"Criando novo post: Post {post_number}")
+			image_position = selected_position
+			selected_position = None
+			option = 2
+
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/empty-title.png", region=(0, 100, 60, 130))
+		if selected_position is not None and option == 2:
+			log("Renomeando título...")
+			image_position = selected_position
+			pyautogui.click(image_position, duration=interval_time)
+			pyautogui.hotkey("ctrl", "v")
+			selected_position = None
+			option = 3
+
+		region = (screen_width-370, 90, 100, 130)
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/edited-post.png", region=region)
+		if selected_position is not None and option == 3:
+			log("Post renomeado")
+			selected_position = None
+			option = 4
+
+		selected_position = pyautogui.locateCenterOnScreen(f"{path}/return.png", region=(0, 80, 70, 40))
+		if selected_position is not None and option == 4:
+			log("Retornando às postagens")
+			image_position = selected_position
+			pyautogui.click(image_position, duration=interval_time)
+			selected_position = None
+			break
+
+		if retryTime != preview_retry_time:
+			log(f"Tentando novamente em {retryTime} segundos")
+			preview_retry_time = retryTime
+			sleep(retryTime)
+
+	log(f"{post_title} inserido com sucesso!")
 	post_number += 1
+
+log("Automação chegou ao fim")
