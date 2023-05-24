@@ -1,8 +1,10 @@
 from time import sleep
 import pyautogui
 import pyperclip
+import signal
+import sys
 
-from functions import log, select_browser, select_blog_link, chapter_values, search_new_tab, open_browser, search_image_position, load_blogger, click_position, rename_title
+from functions import create_log_file, log, select_browser, select_blog_link, chapter_values, search_new_tab, open_browser, search_image_position, load_blogger, click_position, rename_title
 
 interval_time = 0.25
 pyautogui.PAUSE = interval_time
@@ -17,6 +19,13 @@ post_number, post_limit_number = chapter_values()
 path = f"images/{selected_browser}"
 selected_position = None
 
+def handle_interrupt(signal, frame):
+	log("Ou ocorreu algum erro, ou o robô foi interrompido :(")
+	create_log_file()
+	sys.exit(0)
+
+signal.signal(signal.SIGINT, handle_interrupt)
+
 print()
 log("Iniciando o robô")
 open_browser(selected_browser)
@@ -27,7 +36,7 @@ while post_number <= post_limit_number:
 	option = 0
 	retryTime = 0
 	preview_retry_time = retryTime
-	post_title = "Post " + str(post_number).zfill(2)
+	post_title = "Mangá " + str(post_number).zfill(2)
 	pyperclip.copy(post_title)
 
 	while True:
@@ -54,7 +63,6 @@ while post_number <= post_limit_number:
 			selected_position = None
 			option = 3
 
-		## region = (screen_width-370, 90, 100, 130)
 		selected_position = search_image_position(f"{path}/edited-post.png", (screen_width-370, 90, 100, 130))
 		if selected_position is not None and option == 3:
 			log("Post renomeado")
@@ -77,3 +85,4 @@ while post_number <= post_limit_number:
 	post_number += 1
 
 log("Automação chegou ao fim")
+create_log_file()

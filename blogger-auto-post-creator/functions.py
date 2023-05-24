@@ -8,8 +8,21 @@ BLOG_LINKS = os.environ["BLOG_LINKS"]
 LOCAL_PATH = os.getcwd()
 os.chdir(LOCAL_PATH)
 interval_time = 0.25
+log_file_text = ""
+file_name = ""
 
-def log(log_message): print(f"{datetime.now()} - {log_message}")
+def log(log_message):
+	global log_file_text
+	text = f"{datetime.now()} - {log_message}"
+	print(text)
+	log_file_text = f"{text}" if log_file_text == "" else f"{log_file_text}\n{text}"
+
+def create_log_file():
+	time_log = datetime.now()
+	date_numbers = str(time_log).replace("-","").replace(":","").replace(" ","").split(".")[0]
+	with open(f"log/{date_numbers}", "w", encoding="utf-8") as file:
+		file.write(log_file_text)
+		file.close()
 
 def select_browser():
 	print()
@@ -82,4 +95,3 @@ def click_position(selected_position):
 def rename_title(click_position):
 	pyautogui.click(click_position, duration=interval_time)
 	pyautogui.hotkey("ctrl", "v")
-
