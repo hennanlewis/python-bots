@@ -20,14 +20,14 @@ path = f"images/{selected_browser}"
 selected_position = None
 
 def handle_interrupt(signal, frame):
-	log("Ou ocorreu algum erro, ou o robô foi interrompido :(")
+	log("There might have been an error, or the robot was interrupted :(")
 	create_log_file()
 	sys.exit(0)
 
 signal.signal(signal.SIGINT, handle_interrupt)
 
 print()
-log("Iniciando o robô")
+log("Init bot")
 open_browser(selected_browser)
 search_new_tab(path, selected_blog)
 load_blogger(path)
@@ -36,7 +36,7 @@ while post_number <= post_limit_number:
 	option = 0
 	retryTime = 0
 	preview_retry_time = retryTime
-	post_title = "Mangá " + str(post_number).zfill(2)
+	post_title = "Post " + str(post_number).zfill(2)
 	pyperclip.copy(post_title)
 
 	while True:
@@ -44,7 +44,7 @@ while post_number <= post_limit_number:
 
 		selected_position = search_image_position(f"{path}/new-post.png", (0, 120, 300, 150))
 		if selected_position is not None:
-			log(f"Iniciando novo post...")
+			log(f"Initiating a new post...")
 			click_position(selected_position)
 			selected_position = None
 			retryTime += 2
@@ -52,37 +52,37 @@ while post_number <= post_limit_number:
 
 		selected_position = search_image_position(f"{path}/edit-post.png", (0, 0, 300, 50))
 		if selected_position is not None and option == 1:
-			log(f"Criando novo post: Post {post_number}")
+			log(f"Creating post: Post {post_number}")
 			selected_position = None
 			option = 2
 
 		selected_position = search_image_position(f"{path}/empty-title.png", (0, 100, 60, 130))
 		if selected_position is not None and option == 2:
-			log("Renomeando título...")
+			log("Renaming title...")
 			rename_title(selected_position)
 			selected_position = None
 			option = 3
 
 		selected_position = search_image_position(f"{path}/edited-post.png", (screen_width-370, 90, 100, 130))
 		if selected_position is not None and option == 3:
-			log("Post renomeado")
+			log("Post renamed")
 			selected_position = None
 			option = 4
 
 		selected_position = search_image_position(f"{path}/return.png", (0, 80, 70, 50))
 		if selected_position is not None and option == 4:
-			log("Retornando às postagens")
+			log("Back to Blogger main page")
 			click_position(selected_position)
 			selected_position = None
 			break
 
 		if retryTime != preview_retry_time:
-			log(f"Tentando novamente em {retryTime} segundos")
+			log(f"Trying it again in {retryTime} seconds")
 			preview_retry_time = retryTime
 			sleep(retryTime)
 
-	log(f"\"{post_title}\" inserido com sucesso!")
+	log(f"\"{post_title}\"  inserted successfully!")
 	post_number += 1
 
-log("Automação chegou ao fim")
+log("Automation process completed.")
 create_log_file()
