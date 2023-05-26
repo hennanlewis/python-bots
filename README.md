@@ -35,6 +35,12 @@ python -m venv environmentname
 source venv/bin/activate
 ```
 
+On windows:
+```shell
+python -m venv environmentname
+venv\Scripts\activate
+```
+
 Install the required dependencies:
 
 ```shell
