@@ -9,8 +9,42 @@
 </head>
 
 <body>
-	<img src="./assets/Blogger.svg" alt="Blogger icon">
-	<h1>Testing page</h1>
+	<section>
+		<img src="./assets/Blogger.svg" alt="Blogger icon">
+		<h1>Blogger Auto<br>Post Creator</h1>
+	</section>
+	<main>
+		<form>
+			<label>
+				<span>Link</span>
+				<input type="url">
+				<button type="button">Add link</button>
+			</label>
+		</form>
+
+		<form>
+			<label>
+				<span>Initial post number</span>
+				<input type="number" min="1" value="1" />
+			</label>
+
+			<label>
+				<span>Quantity for insertion</span>
+				<input type="range" name="test" min="1" max="100" value="1" />
+				<input type="number" name="test" value="1" min="1" max="100" value="1">
+			</label>
+			<button type="button">Remove item</button>
+		</form>
+
+		<form>
+			<button type="button">Start Creating Posts</button>
+
+			<label>
+				<span>Total progress:</span>
+				<progress value="0" max="100"> 0% </progress>
+			</label>
+		</form>
+	</main>
 </body>
 
 </html>

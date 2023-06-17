@@ -1,6 +1,8 @@
 from time import sleep
 from flask import Flask, render_template, request, jsonify
 from threading import Thread
+import random
+import webview
 
 app = Flask(__name__, static_folder="./assets", template_folder="./templates")
 
@@ -17,7 +19,7 @@ def main_func():
 	global initial_number, final_number, is_creating_post
 	while initial_number <= final_number:
 		sleep(2)
-		print(f"Simulating Post {initial_number} creation")
+		print(f"Creating Post {initial_number}")
 		initial_number += 1
 	is_creating_post = False
 		
@@ -48,3 +50,6 @@ def create_file():
 
 if __name__ == "__main__":
 	app.run(debug=True)
+
+# webview.create_window("Hello world", app)
+# webview.start()

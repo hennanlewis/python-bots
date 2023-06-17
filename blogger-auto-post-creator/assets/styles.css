@@ -1,4 +1,106 @@
+@font-face {
+	font-family: "Signika";
+	src: url("./SignikaRegular.ttf") format("truetype");
+}
+
 * {
 	margin: 0;
 	padding: 0;
+	font-family: "Signika";
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+	background: #c6312322;
+	color: #333;
+	font-size: 1rem;
+	min-height: 100vh;
+}
+
+main {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1.5rem;
+}
+
+section {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	padding: 1rem;
+	background: #c63123ee;
+	color: #fff;
+}
+
+img {
+	width: 3rem;
+}
+
+h1 {
+	font-size: 1.75rem;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	width: 20rem;
+	max-width: 95vw;
+	padding: 0.75rem;
+	background: #8882;
+	border-radius: 5px;
+	box-shadow: 0 1px 10px #aaaa;
+}
+
+label {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+input, button {
+	padding: 0.6rem;
+	border-radius: 3px;
+	border: 1.5px solid #8888;
+	transition: all;
+}
+
+input[type=range] {
+	padding: 0;
+	cursor: pointer;
+}
+
+input:active {
+	outline: red;
+}
+
+button {
+	padding: 0.5rem;
+	background: #c63123;
+	color: #fff;
+	font-weight: bold;
+	font-size: 1rem;
+	border: none;
+	box-shadow: 0 0 4px #0005;
+	cursor: pointer;
+}
+
+form > button {
+	margin-top: -1rem;
+}
+
+form > button:first-child {
+	margin-top: 0;
+}
+
+form:last-child {
+	margin-bottom: 2rem;
 }
