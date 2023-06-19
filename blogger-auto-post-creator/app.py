@@ -6,14 +6,10 @@ import webview
 
 app = Flask(__name__, static_folder="./assets", template_folder="./templates")
 
-counter = 0
-@app.route("/")
-def hello_world():
-	return render_template("index.html", counter=counter)
-
 is_creating_post = False
 initial_number = 0
 final_number = 0
+link_counter = 0
 
 def main_func():
 	global initial_number, final_number, is_creating_post
@@ -23,6 +19,9 @@ def main_func():
 		initial_number += 1
 	is_creating_post = False
 		
+@app.route("/")
+def hello_world():
+	return render_template("index.html", link_counter=link_counter)
 
 @app.route("/createfile", methods=["POST"])
 def create_file():
