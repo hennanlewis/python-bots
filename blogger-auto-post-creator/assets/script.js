@@ -8,6 +8,8 @@ const createUrlLabel = (position) => {
 	input.type = "url"
 	input.id = `link-url${position}`
 	input.name = `link-url${position}`
+	input.placeholder = "Blogger user link"
+	input.addEventListener("blur", event => event.target.required = true)
 	label.appendChild(input)
 
 	return label
@@ -61,7 +63,7 @@ const createRemoveItemButton = (position) => {
 	button.type = "button"
 	button.textContent = "Remove link"
 	button.addEventListener("click", () => {
-		const formToRemove = document.querySelector(`form#position${position}`)
+		const formToRemove = document.querySelector(`div#position${position}`)
 		formToRemove.classList.add("height0")
 		optionsArray = optionsArray.filter(item => item.position != position)
 		setInterval(() => formToRemove.remove(), 1000)
@@ -71,23 +73,23 @@ const createRemoveItemButton = (position) => {
 }
 
 const addLinkForm = (position) => {
-	const form = document.createElement("form")
-	form.id = `position${position}`
+	const div = document.createElement("div")
+	div.id = `position${position}`
 
 	const urlLabel = createUrlLabel(position)
-	form.appendChild(urlLabel)
+	div.appendChild(urlLabel)
 
 	const initialPostNumberLabel = createInitialPostNumberLabel(position)
-	form.appendChild(initialPostNumberLabel)
+	div.appendChild(initialPostNumberLabel)
 
 	const postQuantityLabel = createPostQuantity(position)
-	form.appendChild(postQuantityLabel)
+	div.appendChild(postQuantityLabel)
 
 	const removeItemButton = createRemoveItemButton(position)
-	form.appendChild(removeItemButton)
+	div.appendChild(removeItemButton)
 
-	const container = document.querySelector("main")
-	container.appendChild(form)
+	const container = document.querySelector("form#links-options")
+	container.appendChild(div)
 }
 
 const isValidURL = (url) => {
@@ -109,4 +111,24 @@ addLinkButton.addEventListener("click", () => {
 		post_quantity: 1,
 		position: optionPosition
 	})
+})
+
+const createPostButton = document.querySelector("#create-post")
+createPostButton.addEventListener("click", () => {
+	const bot_options = optionsArray.map(item => {
+		const { position } = item
+		const formsValues = document.querySelector(`div#position${position}`)
+		const blog_url = formsValues.querySelector(`#link-url${position}`)
+		if (!isValidURL(blog_url.value)) return blog_url.focus()
+
+		const initial_post = formsValues.querySelector(`#initial-post${position}`).value
+		const post_quantity = formsValues.querySelector(`#post-quantity${position}`).value
+		return {
+			blog_url: blog_url.value, initial_post: Number(initial_post), post_quantity: Number(post_quantity)
+		}
+	})
+
+	const browser = document.querySelector("input[name='browser']:checked").value
+
+	console.log({ browser, bot_options })
 })

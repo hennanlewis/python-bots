@@ -10,25 +10,36 @@
 
 <body>
 	<section>
-		<img src="./assets/Blogger.svg" alt="Blogger icon">
+		<a href="https://www.blogger.com">
+			<img src="./assets/images/Blogger.svg" alt="Blogger icon">
+		</a>
 		<h1>Blogger Auto<br>Post Creator</h1>
 	</section>
-	<section>
-		<main></main>
+	<main>
+		<form id="links-options"></form>
 
 		<form id="add-item-form">
-			<button type="button" id="add-item">Add link</button>
-		</form>
-
-		<form>
-			<button type="button">Start Creating Posts</button>
-
+			<button type="button" id="add-item" class="add-item">Add link</button>
+			<span>Select browser:</span>
+			<div id="browser-options" class="browser-options">
+				<label>
+					<input class="sr-only" type="radio" name="browser" value="firefox">
+					<span class="sr-only">Mozilla Firefox</span>
+					<img src="./assets/images/FirefoxBrowserLogo.svg" alt="">
+				</label>
+				<label>
+					<input class="sr-only" type="radio" name="browser" value="edge">
+					<span class="sr-only">Microsoft Edge</span>
+					<img src="./assets/images/MicrosoftEdgeLogo.svg" alt="">
+				</label>
+			</div>
+			<button type="button" id="create-post">Start Creating Posts</button>
 			<label>
-				<span>Total progress: 0%</span>
-				<progress value="10" max="100"></progress>
+				<span>Total progress: <b id="progress-value">0</b>%</span>
+				<progress value="0" max="100"></progress>
 			</label>
 		</form>
-	</section>
+	</main>
 	<script src="./assets/script.js"></script>
 </body>
 
