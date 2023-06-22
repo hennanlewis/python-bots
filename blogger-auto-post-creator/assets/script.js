@@ -123,12 +123,15 @@ createPostButton.addEventListener("click", () => {
 
 		const initial_post = formsValues.querySelector(`#initial-post${position}`).value
 		const post_quantity = formsValues.querySelector(`#post-quantity${position}`).value
+		const browser = document.querySelector("input[name='browser']:checked").value
+
 		return {
-			blog_url: blog_url.value, initial_post: Number(initial_post), post_quantity: Number(post_quantity)
+			blog_url: blog_url.value,
+			initial_post: Number(initial_post),
+			post_quantity: Number(post_quantity),
+			browser
 		}
 	})
 
-	const browser = document.querySelector("input[name='browser']:checked").value
-
-	console.log({ browser, bot_options })
+	console.log(bot_options)
 })
