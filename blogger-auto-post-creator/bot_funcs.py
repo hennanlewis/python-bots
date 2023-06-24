@@ -1,5 +1,6 @@
 from datetime import datetime
 import pyautogui
+import pyscreeze
 import os
 from dotenv import load_dotenv
 
@@ -77,14 +78,14 @@ def open_browser(browser_name):
 
 
 def search_image_position(path, region):
-    return pyautogui.locateCenterOnScreen(path, region=region)
+    return pyscreeze.locateCenterOnScreen(path, region=region)
 
 
 def search_new_tab(path, blog_link):
     log('Searching "New tab" icon...')
     while True:
         selected_position = search_image_position(
-            f"{path}/new-tab.png", (0, 0, 300, 50)
+            f"{path}/new-tab.png", region=(0, 0, 300, 50)
         )
         if selected_position is not None:
             log("Opening link...")

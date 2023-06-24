@@ -11,7 +11,7 @@ def handle_interrupt(signal, frame):
 	bot_funcs.create_log_file()
 	sys.exit(0)
 
-def initialize_bot(selected_browser, blog_link, initial_post, final_post):
+def initialize_bot(selected_browser, blog_link, initial_post, final_post, current_item):
 	interval_time = 0.25
 	pyautogui.PAUSE = interval_time
 	screen_width, screen_height = pyautogui.size()
@@ -28,7 +28,7 @@ def initialize_bot(selected_browser, blog_link, initial_post, final_post):
 	while initial_post <= final_post:
 		option = 0
 		retryTime = preview_retry_time = 0
-		post_title = "Post " + str(current_post).zfill(2)
+		post_title = "Mangá " + str(initial_post).zfill(2)
 		pyperclip.copy(post_title)
 
 		while True:
@@ -44,7 +44,7 @@ def initialize_bot(selected_browser, blog_link, initial_post, final_post):
 
 			selected_position = bot_funcs.search_image_position(f"{path}/edit-post.png", (0, 0, 300, 50))
 			if selected_position is not None and option == 1:
-				bot_funcs.log(f"Creating post: Post {current_post}")
+				bot_funcs.log(f"Creating post: Post {initial_post}")
 				selected_position = None
 				option = 2
 
@@ -74,21 +74,17 @@ def initialize_bot(selected_browser, blog_link, initial_post, final_post):
 				sleep(retryTime)
 
 		bot_funcs.log(f"\"{post_title}\"  inserted successfully!")
-		current_post += 1
+		initial_post += 1
+		current_item.value += 1
 
 	bot_funcs.log("Automation process completed.")
 	bot_funcs.create_log_file()
 
 def bot_behavior(browser, blog, initial_post, final_post, current_item):
-	print(browser, blog)
-	sleep(2)
-	browser = "opera"
-	sleep(2)
-	blog = "blog x"
-	sleep(2)
+	sleep(5)
 	for i in range(initial_post, final_post + 1):
-		current_item += 1
+		current_item.value += 1
 		sleep(0.1)
-		print({ "current_blog": blog, "current_item": current_item, "total_quantity": 300})
+		print({ "current_blog": blog, "current_item": current_item.value, "total_quantity": 300})
 
 signal.signal(signal.SIGINT, handle_interrupt)
