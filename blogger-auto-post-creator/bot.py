@@ -78,6 +78,7 @@ def initialize_bot(selected_browser, blog_link, initial_post, final_post, curren
 		current_item.value += 1
 
 	bot_funcs.log("Automation process completed.")
+	pyautogui.moveTo(500, 500)
 	bot_funcs.create_log_file()
 
 def bot_behavior(browser, blog, initial_post, final_post, current_item):

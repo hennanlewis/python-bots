@@ -1,9 +1,8 @@
-from time import sleep
 from flask import Flask, render_template, request, jsonify
 from multiprocessing import Process, Value
 import webview
 
-from main_bot import bot_behavior, initialize_bot
+from bot import initialize_bot
 
 app = Flask(__name__, static_folder="./assets", template_folder="./templates")
 
@@ -32,13 +31,10 @@ def hello_world():
 	return render_template("index.html")
 
 
-@app.route("/createfile", methods=["POST"])
-def create_file():
+@app.route("/startbot", methods=["POST"])
+def start_bot():
 	global is_creating_post, total_quantity, data
 	is_valid_data = True
-
-	if current_item.value == total_quantity:
-		is_creating_post = False
 
 	if is_creating_post:
 		return jsonify(
@@ -50,6 +46,7 @@ def create_file():
 		)
 
 	data = request.get_json()
+	print(data)
 	for item in data:
 		if not all(
 			key in item
@@ -72,9 +69,14 @@ def create_file():
 
 	return jsonify({"error": "Invalid request body"}), 400
 
+@app.route("/resetbot")
+def reset_bot():
+	global is_creating_post
+	is_creating_post = False
+	return jsonify({"message": "Function is reseted"})
 
-if __name__ == "__main__":
-	app.run(debug=True)
+# if __name__ == "__main__":
+# 	app.run(debug=True)
 
-# webview.create_window("Hello world", app)
-# webview.start()
+webview.create_window("Hello world", app)
+webview.start()

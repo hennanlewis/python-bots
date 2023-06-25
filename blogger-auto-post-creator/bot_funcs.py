@@ -2,13 +2,7 @@ from datetime import datetime
 import pyautogui
 import pyscreeze
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
-BLOG_LINKS = os.environ["BLOG_LINKS"]
-LOCAL_PATH = os.getcwd()
-os.chdir(LOCAL_PATH)
 interval_time = 0.25
 log_file_text = ""
 file_name = ""
@@ -43,21 +37,6 @@ def select_browser():
             return browser_options[selected - 1]
         except Exception:
             print("\nAn error occurred. Please try again.")
-
-
-def select_blog_link():
-    print()
-    while True:
-        try:
-            blog_options = BLOG_LINKS.split(",")
-            print("Select a Blogger link option: ")
-            for position in range(len(blog_options)):
-                print(f"{position + 1} - Link {position + 1}")
-            selected = int(input(""))
-            return blog_options[selected - 1]
-        except Exception:
-            print("\nAn error occurred. Please try again.")
-
 
 def chapter_values():
     print()
