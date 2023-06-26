@@ -1,4 +1,4 @@
-# Blogger Post Bot
+# Blogger Auto Post Creator
 
 Repository for a bot in python for automating the creation of posts in Blogger.
 
