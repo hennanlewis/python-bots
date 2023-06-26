@@ -3,7 +3,6 @@ import { generateDataToRequest } from "./validation.js"
 export const startBot = (event, options) => {
 	const dataToRequest = generateDataToRequest(options)
 
-	console.log(dataToRequest)
 	if (dataToRequest.filter(item => item).length > 0) {
 		fetch("/startbot", {
 			method: "POST", body: JSON.stringify(dataToRequest), headers: {

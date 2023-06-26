@@ -1,7 +1,6 @@
 from datetime import datetime
 import pyautogui
 import pyscreeze
-import os
 
 interval_time = 0.25
 log_file_text = ""
@@ -37,6 +36,7 @@ def select_browser():
             return browser_options[selected - 1]
         except Exception:
             print("\nAn error occurred. Please try again.")
+
 
 def chapter_values():
     print()

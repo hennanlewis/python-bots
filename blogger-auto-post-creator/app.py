@@ -4,7 +4,7 @@ import webview
 
 from bot import initialize_bot
 
-app = Flask(__name__, static_folder="./assets", template_folder="./templates")
+app = Flask(__name__, static_folder="assets")
 
 is_creating_post = False
 current_item = Value("i", 0)
@@ -75,8 +75,6 @@ def reset_bot():
 	is_creating_post = False
 	return jsonify({"message": "Function is reseted"})
 
-# if __name__ == "__main__":
-# 	app.run(debug=True)
-
-webview.create_window("Hello world", app)
-webview.start()
+if __name__ == "__main__":
+	webview.create_window("Blogger Auto Post Creator", app)
+	webview.start()
