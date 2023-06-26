@@ -51,16 +51,28 @@ pip install -r requirements.txt
 
 Run the bot script:
 ```shell
-python main.py
+python app.py
 ```
 
-The robot will display a CLI to configure some parameters.
+The robot will display a GUI to configure some parameters. These are the steps to run the bot:
 
-The first one is the browser selection. The second one is the range of the number of chapters to be inserted.
+1. This is the main screen:
+   ![Bot GUI 1](doc/Screenshot_5.png)
+
+1. Click on `Add link` to insert the necessary data. The following inputs will appear on the screen:
+   ![Bot GUI 2](doc/Screenshot_6.png)
+
+1. After inputting the data, select the browser to start the functions:
+   ![Bot GUI 3](doc/Screenshot_7.png)
+
+1. If the data is valid, the last button will change to `Stop Creating Posts`:
+   ![Bot GUI 3](doc/Screenshot_8.png)
+
+If you want to add more links, simply click on "Add link." After inserting all the posts in the first input of set inputs, the bot will start inserting all the posts in the second link, and so on for all the inserted links.
 
 > Note 1: the maximum daily number of posts allowed by Blogger for creation is 101
 
-Based on this initial information, the bot starts the action:
+Based on this initial information, when the bot starts the action, it:
 1. Opens the start menu;
 2. Searches for the selected browser;
    ![Bot Action 1](doc/Screenshot_1.png)
@@ -71,22 +83,8 @@ Based on this initial information, the bot starts the action:
 	![Bot Action 3](doc/Screenshot_3.png)
 	![Bot Action 4](doc/Screenshot_4.png)
 
+
 # Limitations and Precautions
-The provided links should already be logged into the browser before the bot starts its actions.
-
-Create a `.env` file with the environment variable `BLOG_LINKS` at the same leval as `main.py` file. The text inside this file should follow the following pattern:
-
-```properties
-BLOG_LINKS=https://www.blogger.com/blog/posts/1234567890
-```
-
-This link is the initial author page from the blog to create the posts.
-
-If you want to include multiple links to select from, separate them by commas like this:
-
-```properties
-BLOG_LINKS=https://www.blogger.com/blog/posts/1234567890,https://www.blogger.com/blog/posts/2345678901,https://www.blogger.com/blog/posts/3456789012
-```
 
 Trying to interact with the mouse or keyboard during the bot's operation will be like a tug-of-war, as the bot will continuously attempt to execute its function while the Blogger page is open. So, just let the bot do its job.
 

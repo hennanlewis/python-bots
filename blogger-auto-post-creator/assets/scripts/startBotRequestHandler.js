@@ -19,7 +19,7 @@ export const startBot = (event, options) => {
 
 const changeToResetButton = (element, options) => {
 	const clone = element.cloneNode(true)
-	clone.textContent = "Reset Bot"
+	clone.textContent = "Stop Creating Posts"
 	clone.addEventListener("click", event => {
 		fetch("/resetbot")
 			.then(res => {
