@@ -19,20 +19,20 @@ As google blocks tools like puppeteer, one way I managed to get around this was 
 1. Clone the repository:
 
 ```shell
-git clone https://github.com/hennanlewis/blogger-post-bot.git
+git clone https://github.com/hennanlewis/blogger-post-creator.git
 ```
 
 Navigate to the project directory:
 
 ```shell
-cd blogger-auto-post-creator
+cd blogger-post-creator
 ```
 
 Set up a virtual environment (optional but recommended):
 
 ```shell
 python -m venv environmentname
-source venv/bin/activate
+source environmentname/bin/activate
 ```
 
 On windows:
